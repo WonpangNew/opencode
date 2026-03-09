@@ -648,6 +648,14 @@ export type EventTodoUpdated = {
   }
 }
 
+export type EventTaskUpdated = {
+  type: "task.updated"
+  properties: {
+    sessionID: string
+    tasks: Array<Todo>
+  }
+}
+
 export type EventFileWatcherUpdated = {
   type: "file.watcher.updated"
   properties: {
@@ -883,6 +891,7 @@ export type Event =
   | EventQuestionRejected
   | EventSessionCompacted
   | EventTodoUpdated
+  | EventTaskUpdated
   | EventFileWatcherUpdated
   | EventTuiPromptAppend
   | EventTuiCommandExecute
@@ -1346,8 +1355,8 @@ export type PermissionConfig =
       bash?: PermissionRuleConfig
       task?: PermissionRuleConfig
       external_directory?: PermissionRuleConfig
-      todowrite?: PermissionActionConfig
-      todoread?: PermissionActionConfig
+      taskwrite?: PermissionActionConfig
+      taskread?: PermissionActionConfig
       question?: PermissionActionConfig
       webfetch?: PermissionActionConfig
       websearch?: PermissionActionConfig

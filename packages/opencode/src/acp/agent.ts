@@ -34,7 +34,7 @@ import { Agent as AgentModule } from "../agent/agent"
 import { Installation } from "@/installation"
 import { MessageV2 } from "@/session/message-v2"
 import { Config } from "@/config/config"
-import { Todo } from "@/session/todo"
+import { TaskList } from "@/session/task-list"
 import { z } from "zod"
 import { LoadAPIKeyError } from "ai"
 import type { Event, OpencodeClient, SessionMessageResponse } from "@opencode-ai/sdk/v2"
@@ -279,30 +279,30 @@ export namespace ACP {
                   })
                 }
 
-                if (part.tool === "todowrite") {
-                  const parsedTodos = z.array(Todo.Info).safeParse(JSON.parse(part.state.output))
-                  if (parsedTodos.success) {
+                if (part.tool === "taskwrite") {
+                  const parsedTasks = z.array(TaskList.Info).safeParse(JSON.parse(part.state.output))
+                  if (parsedTasks.success) {
                     await this.connection
                       .sessionUpdate({
                         sessionId,
                         update: {
                           sessionUpdate: "plan",
-                          entries: parsedTodos.data.map((todo) => {
+                          entries: parsedTasks.data.map((task) => {
                             const status: PlanEntry["status"] =
-                              todo.status === "cancelled" ? "completed" : (todo.status as PlanEntry["status"])
+                              task.status === "cancelled" ? "completed" : (task.status as PlanEntry["status"])
                             return {
                               priority: "medium",
                               status,
-                              content: todo.content,
+                              content: task.content,
                             }
                           }),
                         },
                       })
                       .catch((error) => {
-                        log.error("failed to send session update for todo", { error })
+                        log.error("failed to send session update for task", { error })
                       })
                   } else {
-                    log.error("failed to parse todo output", { error: parsedTodos.error })
+                    log.error("failed to parse task output", { error: parsedTasks.error })
                   }
                 }
 
@@ -761,30 +761,30 @@ export namespace ACP {
                 })
               }
 
-              if (part.tool === "todowrite") {
-                const parsedTodos = z.array(Todo.Info).safeParse(JSON.parse(part.state.output))
-                if (parsedTodos.success) {
+              if (part.tool === "taskwrite") {
+                const parsedTasks = z.array(TaskList.Info).safeParse(JSON.parse(part.state.output))
+                if (parsedTasks.success) {
                   await this.connection
                     .sessionUpdate({
                       sessionId,
                       update: {
                         sessionUpdate: "plan",
-                        entries: parsedTodos.data.map((todo) => {
+                        entries: parsedTasks.data.map((task) => {
                           const status: PlanEntry["status"] =
-                            todo.status === "cancelled" ? "completed" : (todo.status as PlanEntry["status"])
+                            task.status === "cancelled" ? "completed" : (task.status as PlanEntry["status"])
                           return {
                             priority: "medium",
                             status,
-                            content: todo.content,
+                            content: task.content,
                           }
                         }),
                       },
                     })
                     .catch((err) => {
-                      log.error("failed to send session update for todo", { error: err })
+                      log.error("failed to send session update for task", { error: err })
                     })
                 } else {
-                  log.error("failed to parse todo output", { error: parsedTodos.error })
+                  log.error("failed to parse task output", { error: parsedTasks.error })
                 }
               }
 

@@ -190,15 +190,19 @@ export const { use: useSync, provider: SyncProvider } = createSimpleContext({
           inflightDiff.set(sessionID, promise)
           return promise
         },
-        async todo(sessionID: string) {
-          if (store.todo[sessionID] !== undefined) return
+        async task(sessionID: string) {
+          if (store.task[sessionID] !== undefined) return
 
           const pending = inflightTodo.get(sessionID)
           if (pending) return pending
 
-          const promise = retry(() => sdk.client.session.todo({ sessionID }))
-            .then((todo) => {
-              setStore("todo", sessionID, reconcile(todo.data ?? [], { key: "id" }))
+          const promise = retry(
+            () =>
+              (sdk.client.session as any).task?.({ sessionID }) ?? (sdk.client.session as any).todo({ sessionID }),
+          )
+            .then((res) => {
+              const data = res?.data ?? res ?? []
+              setStore("task", sessionID, reconcile(Array.isArray(data) ? data : [], { key: "id" }))
             })
             .finally(() => {
               inflightTodo.delete(sessionID)

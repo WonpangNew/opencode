@@ -54,7 +54,7 @@ export const { use: useSync, provider: SyncProvider } = createSimpleContext({
       session_diff: {
         [sessionID: string]: Snapshot.FileDiff[]
       }
-      todo: {
+      task: {
         [sessionID: string]: Todo[]
       }
       message: {
@@ -91,7 +91,7 @@ export const { use: useSync, provider: SyncProvider } = createSimpleContext({
       session: [],
       session_status: {},
       session_diff: {},
-      todo: {},
+      task: {},
       message: {},
       part: {},
       lsp: [],
@@ -185,8 +185,11 @@ export const { use: useSync, provider: SyncProvider } = createSimpleContext({
           break
         }
 
+        case "task.updated":
+          setStore("task", event.properties.sessionID, event.properties.tasks)
+          break
         case "todo.updated":
-          setStore("todo", event.properties.sessionID, event.properties.todos)
+          setStore("task", event.properties.sessionID, event.properties.todos ?? [])
           break
 
         case "session.diff":
@@ -416,18 +419,19 @@ export const { use: useSync, provider: SyncProvider } = createSimpleContext({
         },
         async sync(sessionID: string) {
           if (fullSyncedSessions.has(sessionID)) return
-          const [session, messages, todo, diff] = await Promise.all([
+          const [session, messages, task, diff] = await Promise.all([
             sdk.client.session.get({ sessionID }, { throwOnError: true }),
             sdk.client.session.messages({ sessionID, limit: 100 }),
-            sdk.client.session.todo({ sessionID }),
+            (sdk.client.session as any).task?.({ sessionID }) ?? (sdk.client.session as any).todo({ sessionID }),
             sdk.client.session.diff({ sessionID }),
           ])
+          const taskData = task?.data ?? task
           setStore(
             produce((draft) => {
               const match = Binary.search(draft.session, sessionID, (s) => s.id)
               if (match.found) draft.session[match.index] = session.data!
               if (!match.found) draft.session.splice(match.index, 0, session.data!)
-              draft.todo[sessionID] = todo.data ?? []
+              draft.task[sessionID] = (Array.isArray(taskData) ? taskData : taskData ?? []) as Todo[]
               draft.message[sessionID] = messages.data!.map((x) => x.info)
               for (const message of messages.data!) {
                 draft.part[message.info.id] = message.parts

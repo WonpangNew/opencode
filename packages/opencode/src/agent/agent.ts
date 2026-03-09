@@ -112,8 +112,8 @@ export namespace Agent {
         permission: PermissionNext.merge(
           defaults,
           PermissionNext.fromConfig({
-            todoread: "deny",
-            todowrite: "deny",
+            taskread: "deny",
+            taskwrite: "deny",
           }),
           user,
         ),

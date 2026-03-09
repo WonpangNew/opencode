@@ -40,8 +40,8 @@ function computeStatusFromPart(part: PartType | undefined, t: Translator): strin
     switch (part.tool) {
       case "task":
         return t("ui.sessionTurn.status.delegating")
-      case "todowrite":
-      case "todoread":
+      case "taskwrite":
+      case "taskread":
         return t("ui.sessionTurn.status.planning")
       case "read":
         return t("ui.sessionTurn.status.gatheringContext")

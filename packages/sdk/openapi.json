@@ -1526,9 +1526,9 @@
         ]
       }
     },
-    "/session/{sessionID}/todo": {
+    "/session/{sessionID}/task": {
       "get": {
-        "operationId": "session.todo",
+        "operationId": "session.task",
         "parameters": [
           {
             "in": "query",
@@ -1547,8 +1547,75 @@
             "description": "Session ID"
           }
         ],
-        "summary": "Get session todos",
-        "description": "Retrieve the todo list associated with a specific session, showing tasks and action items.",
+        "summary": "Get session tasks",
+        "description": "Retrieve the task list associated with a specific session, showing tasks and action items.",
+        "responses": {
+          "200": {
+            "description": "Task list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Todo"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundError"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "js",
+            "source": "import { createOpencodeClient } from \"@opencode-ai/sdk\"\n\nconst client = createOpencodeClient()\nawait client.session.task({ ... })"
+          }
+        ]
+      }
+    },
+    "/session/{sessionID}/todo": {
+      "get": {
+        "operationId": "session.todo",
+        "deprecated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "directory",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "sessionID",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Session ID"
+          }
+        ],
+        "summary": "Get session tasks (deprecated)",
+        "description": "Retrieve the task list. Deprecated: use session.task instead.",
         "responses": {
           "200": {
             "description": "Todo list",
@@ -7509,6 +7576,31 @@
         },
         "required": ["type", "properties"]
       },
+      "Event.task.updated": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "task.updated"
+          },
+          "properties": {
+            "type": "object",
+            "properties": {
+              "sessionID": {
+                "type": "string"
+              },
+              "tasks": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Todo"
+                }
+              }
+            },
+            "required": ["sessionID", "tasks"]
+          }
+        },
+        "required": ["type", "properties"]
+      },
       "Event.file.watcher.updated": {
         "type": "object",
         "properties": {
@@ -8170,6 +8262,9 @@
           },
           {
             "$ref": "#/components/schemas/Event.todo.updated"
+          },
+          {
+            "$ref": "#/components/schemas/Event.task.updated"
           },
           {
             "$ref": "#/components/schemas/Event.file.watcher.updated"
@@ -8842,10 +8937,10 @@
               "external_directory": {
                 "$ref": "#/components/schemas/PermissionRuleConfig"
               },
-              "todowrite": {
+              "taskwrite": {
                 "$ref": "#/components/schemas/PermissionActionConfig"
               },
-              "todoread": {
+              "taskread": {
                 "$ref": "#/components/schemas/PermissionActionConfig"
               },
               "question": {

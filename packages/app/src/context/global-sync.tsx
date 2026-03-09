@@ -60,7 +60,7 @@ type State = {
   session_diff: {
     [sessionID: string]: FileDiff[]
   }
-  todo: {
+  task: {
     [sessionID: string]: Todo[]
   }
   permission: {
@@ -162,7 +162,7 @@ function createGlobalSync() {
           sessionTotal: 0,
           session_status: {},
           session_diff: {},
-          todo: {},
+          task: {},
           permission: {},
           question: {},
           mcp: {},
@@ -478,8 +478,11 @@ function createGlobalSync() {
       case "session.diff":
         setStore("session_diff", event.properties.sessionID, reconcile(event.properties.diff, { key: "file" }))
         break
+      case "task.updated":
+        setStore("task", event.properties.sessionID, reconcile(event.properties.tasks, { key: "id" }))
+        break
       case "todo.updated":
-        setStore("todo", event.properties.sessionID, reconcile(event.properties.todos, { key: "id" }))
+        setStore("task", event.properties.sessionID, reconcile(event.properties.todos ?? [], { key: "id" }))
         break
       case "session.status": {
         setStore("session_status", event.properties.sessionID, reconcile(event.properties.status))

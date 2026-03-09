@@ -227,7 +227,7 @@ Load a [skill](/docs/skills) (a `SKILL.md` file) and return its content in the c
 
 ---
 
-### todowrite
+### taskwrite
 
 Manage todo lists during coding sessions.
 
@@ -235,7 +235,7 @@ Manage todo lists during coding sessions.
 {
   "$schema": "https://opencode.ai/config.json",
   "permission": {
-    "todowrite": "allow"
+    "taskwrite": "allow"
   }
 }
 ```
@@ -248,7 +248,7 @@ This tool is disabled for subagents by default, but you can enable it manually. 
 
 ---
 
-### todoread
+### taskread
 
 Read existing todo lists.
 
@@ -256,12 +256,12 @@ Read existing todo lists.
 {
   "$schema": "https://opencode.ai/config.json",
   "permission": {
-    "todoread": "allow"
+    "taskread": "allow"
   }
 }
 ```
 
-Reads the current todo list state. Used by the LLM to track what tasks are pending or completed.
+Reads the current task list state. Used by the LLM to track what tasks are pending or completed.
 
 :::note
 This tool is disabled for subagents by default, but you can enable it manually. [Learn more](/docs/agents/#permissions)

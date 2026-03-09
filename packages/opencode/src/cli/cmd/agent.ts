@@ -23,8 +23,8 @@ const AVAILABLE_TOOLS = [
   "grep",
   "webfetch",
   "task",
-  "todowrite",
-  "todoread",
+  "taskwrite",
+  "taskread",
 ]
 
 const AgentCreateCommand = cmd({

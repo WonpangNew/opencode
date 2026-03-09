@@ -69,14 +69,14 @@ const ITEMS = [
     description: "settings.permissions.tool.lsp.description",
   },
   {
-    id: "todoread",
-    title: "settings.permissions.tool.todoread.title",
-    description: "settings.permissions.tool.todoread.description",
+    id: "taskread",
+    title: "settings.permissions.tool.taskread.title",
+    description: "settings.permissions.tool.taskread.description",
   },
   {
-    id: "todowrite",
-    title: "settings.permissions.tool.todowrite.title",
-    description: "settings.permissions.tool.todowrite.description",
+    id: "taskwrite",
+    title: "settings.permissions.tool.taskwrite.title",
+    description: "settings.permissions.tool.taskwrite.description",
   },
   {
     id: "webfetch",

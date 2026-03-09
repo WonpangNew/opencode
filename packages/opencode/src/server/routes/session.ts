@@ -9,7 +9,7 @@ import { SessionCompaction } from "../../session/compaction"
 import { SessionRevert } from "../../session/revert"
 import { SessionStatus } from "@/session/status"
 import { SessionSummary } from "@/session/summary"
-import { Todo } from "../../session/todo"
+import { TaskList } from "../../session/task-list"
 import { Agent } from "../../agent/agent"
 import { Snapshot } from "@/snapshot"
 import { Log } from "../../util/log"
@@ -153,17 +153,17 @@ export const SessionRoutes = lazy(() =>
       },
     )
     .get(
-      "/:sessionID/todo",
+      "/:sessionID/task",
       describeRoute({
-        summary: "Get session todos",
-        description: "Retrieve the todo list associated with a specific session, showing tasks and action items.",
-        operationId: "session.todo",
+        summary: "Get session tasks",
+        description: "Retrieve the task list associated with a specific session, showing tasks and action items.",
+        operationId: "session.task",
         responses: {
           200: {
-            description: "Todo list",
+            description: "Task list",
             content: {
               "application/json": {
-                schema: resolver(Todo.Info.array()),
+                schema: resolver(TaskList.Info.array()),
               },
             },
           },
@@ -178,8 +178,39 @@ export const SessionRoutes = lazy(() =>
       ),
       async (c) => {
         const sessionID = c.req.valid("param").sessionID
-        const todos = await Todo.get(sessionID)
-        return c.json(todos)
+        const tasks = await TaskList.get(sessionID)
+        return c.json(tasks)
+      },
+    )
+    .get(
+      "/:sessionID/todo",
+      describeRoute({
+        summary: "Get session tasks (deprecated, use /task)",
+        description: "Retrieve the task list. Deprecated: use session.task instead.",
+        operationId: "session.todo",
+        deprecated: true,
+        responses: {
+          200: {
+            description: "Task list",
+            content: {
+              "application/json": {
+                schema: resolver(TaskList.Info.array()),
+              },
+            },
+          },
+          ...errors(400, 404),
+        },
+      }),
+      validator(
+        "param",
+        z.object({
+          sessionID: z.string().meta({ description: "Session ID" }),
+        }),
+      ),
+      async (c) => {
+        const sessionID = c.req.valid("param").sessionID
+        const tasks = await TaskList.get(sessionID)
+        return c.json(tasks)
       },
     )
     .post(

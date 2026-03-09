@@ -13,8 +13,8 @@ import { Provider } from "../../provider/provider"
 import { Agent } from "../../agent/agent"
 
 const TOOL: Record<string, [string, string]> = {
-  todowrite: ["Todo", UI.Style.TEXT_WARNING_BOLD],
-  todoread: ["Todo", UI.Style.TEXT_WARNING_BOLD],
+  taskwrite: ["Task", UI.Style.TEXT_WARNING_BOLD],
+  taskread: ["Task", UI.Style.TEXT_WARNING_BOLD],
   bash: ["Bash", UI.Style.TEXT_DANGER_BOLD],
   edit: ["Edit", UI.Style.TEXT_SUCCESS_BOLD],
   glob: ["Glob", UI.Style.TEXT_INFO_BOLD],

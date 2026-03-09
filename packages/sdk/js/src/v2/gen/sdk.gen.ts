@@ -1041,9 +1041,39 @@ export class Session extends HeyApiClient {
   }
 
   /**
-   * Get session todos
+   * Get session tasks
    *
-   * Retrieve the todo list associated with a specific session, showing tasks and action items.
+   * Retrieve the task list associated with a specific session, showing tasks and action items.
+   */
+  public task<ThrowOnError extends boolean = false>(
+    parameters: {
+      sessionID: string
+      directory?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "path", key: "sessionID" },
+            { in: "query", key: "directory" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).get<SessionTodoResponses, SessionTodoErrors, ThrowOnError>({
+      url: "/session/{sessionID}/task",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * Get session todos (deprecated)
+   *
+   * Retrieve the task list. Deprecated: use session.task instead.
    */
   public todo<ThrowOnError extends boolean = false>(
     parameters: {

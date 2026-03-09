@@ -245,12 +245,12 @@ export function getToolInfo(tool: string, input: any = {}): ToolInfo {
           ? `${input.files.length} ${i18n.t(input.files.length > 1 ? "ui.common.file.other" : "ui.common.file.one")}`
           : undefined,
       }
-    case "todowrite":
+    case "taskwrite":
       return {
         icon: "checklist",
         title: i18n.t("ui.tool.todos"),
       }
-    case "todoread":
+    case "taskread":
       return {
         icon: "checklist",
         title: i18n.t("ui.tool.todos.read"),
@@ -292,7 +292,7 @@ export function AssistantMessageDisplay(props: { message: AssistantMessage; part
   const filteredParts = createMemo(
     () =>
       props.parts.filter((x) => {
-        return x.type !== "tool" || (x as ToolPart).tool !== "todoread"
+        return x.type !== "tool" || (x as ToolPart).tool !== "taskread"
       }),
     emptyParts,
     { equals: same },
@@ -1200,21 +1200,21 @@ ToolRegistry.register({
 })
 
 ToolRegistry.register({
-  name: "todowrite",
+  name: "taskwrite",
   render(props) {
     const i18n = useI18n()
-    const todos = createMemo(() => {
-      const meta = props.metadata?.todos
+    const tasks = createMemo(() => {
+      const meta = props.metadata?.tasks ?? props.metadata?.todos
       if (Array.isArray(meta)) return meta
 
-      const input = props.input.todos
+      const input = props.input.tasks ?? props.input.todos
       if (Array.isArray(input)) return input
 
       return []
     })
 
     const subtitle = createMemo(() => {
-      const list = todos()
+      const list = tasks()
       if (list.length === 0) return ""
       return `${list.filter((t: Todo) => t.status === "completed").length}/${list.length}`
     })
@@ -1229,13 +1229,13 @@ ToolRegistry.register({
           subtitle: subtitle(),
         }}
       >
-        <Show when={todos().length}>
+        <Show when={tasks().length}>
           <div data-component="todos">
-            <For each={todos()}>
-              {(todo: Todo) => (
-                <Checkbox readOnly checked={todo.status === "completed"}>
-                  <div data-slot="message-part-todo-content" data-completed={todo.status === "completed"}>
-                    {todo.content}
+            <For each={tasks()}>
+              {(task: Todo) => (
+                <Checkbox readOnly checked={task.status === "completed"}>
+                  <div data-slot="message-part-todo-content" data-completed={task.status === "completed"}>
+                    {task.content}
                   </div>
                 </Checkbox>
               )}

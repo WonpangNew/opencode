@@ -86,10 +86,10 @@ export function Part(props: PartProps) {
               <Match when={props.part.type === "reasoning" && props.message.role === "assistant"}>
                 <IconBrain width={18} height={18} />
               </Match>
-              <Match when={props.part.type === "tool" && props.part.tool === "todowrite"}>
+              <Match when={props.part.type === "tool" && props.part.tool === "taskwrite"}>
                 <IconQueueList width={18} height={18} />
               </Match>
-              <Match when={props.part.type === "tool" && props.part.tool === "todoread"}>
+              <Match when={props.part.type === "tool" && props.part.tool === "taskread"}>
                 <IconQueueList width={18} height={18} />
               </Match>
               <Match when={props.part.type === "tool" && props.part.tool === "bash"}>
@@ -254,8 +254,8 @@ export function Part(props: PartProps) {
                       message={props.message}
                     />
                   </Match>
-                  <Match when={props.part.tool === "todowrite"}>
-                    <TodoWriteTool
+                  <Match when={props.part.tool === "taskwrite"}>
+                    <TaskWriteTool
                       message={props.message}
                       id={props.part.id}
                       tool={props.part.tool}
@@ -390,17 +390,17 @@ function formatErrorString(error: string): JSX.Element {
   )
 }
 
-export function TodoWriteTool(props: ToolProps) {
+export function TaskWriteTool(props: ToolProps) {
   const priority: Record<Todo["status"], number> = {
     in_progress: 0,
     pending: 1,
     completed: 2,
   }
-  const todos = createMemo(() =>
-    ((props.state.input?.todos ?? []) as Todo[]).slice().sort((a, b) => priority[a.status] - priority[b.status]),
+  const tasks = createMemo(() =>
+    ((props.state.input?.tasks ?? props.state.input?.todos ?? []) as Todo[]).slice().sort((a, b) => priority[a.status] - priority[b.status]),
   )
-  const starting = () => todos().every((t: Todo) => t.status === "pending")
-  const finished = () => todos().every((t: Todo) => t.status === "completed")
+  const starting = () => tasks().every((t: Todo) => t.status === "pending")
+  const finished = () => tasks().every((t: Todo) => t.status === "completed")
 
   return (
     <>
@@ -412,13 +412,13 @@ export function TodoWriteTool(props: ToolProps) {
           </Switch>
         </span>
       </div>
-      <Show when={todos().length > 0}>
+      <Show when={tasks().length > 0}>
         <ul data-component="todos">
-          <For each={todos()}>
-            {(todo) => (
-              <li data-slot="item" data-status={todo.status}>
+          <For each={tasks()}>
+            {(task) => (
+              <li data-slot="item" data-status={task.status}>
                 <span></span>
-                {todo.content}
+                {task.content}
               </li>
             )}
           </For>
