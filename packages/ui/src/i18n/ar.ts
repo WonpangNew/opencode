@@ -50,8 +50,8 @@ export const dict = {
   "ui.tool.webfetch": "جلب الويب",
   "ui.tool.shell": "Shell",
   "ui.tool.patch": "تصحيح",
-  "ui.tool.todos": "المهام",
-  "ui.tool.todos.read": "قراءة المهام",
+  "ui.tool.todos": "خطة الوكلاء الفرعيين",
+  "ui.tool.todos.read": "قراءة خطة الوكلاء الفرعيين",
   "ui.tool.questions": "أسئلة",
   "ui.tool.agent": "وكيل {{type}}",
 

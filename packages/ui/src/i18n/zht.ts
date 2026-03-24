@@ -54,8 +54,8 @@ export const dict = {
   "ui.tool.webfetch": "Webfetch",
   "ui.tool.shell": "Shell",
   "ui.tool.patch": "修補",
-  "ui.tool.todos": "待辦",
-  "ui.tool.todos.read": "讀取待辦",
+  "ui.tool.todos": "子智能體計劃",
+  "ui.tool.todos.read": "讀取子智能體計劃",
   "ui.tool.questions": "問題",
   "ui.tool.agent": "{{type}} 代理程式",
 

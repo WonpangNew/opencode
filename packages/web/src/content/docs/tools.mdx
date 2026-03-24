@@ -229,7 +229,7 @@ Load a [skill](/docs/skills) (a `SKILL.md` file) and return its content in the c
 
 ### todowrite
 
-Manage todo lists during coding sessions.
+Manage subagent orchestration plans during coding sessions.
 
 ```json title="opencode.json" {4}
 {
@@ -240,7 +240,7 @@ Manage todo lists during coding sessions.
 }
 ```
 
-Creates and updates task lists to track progress during complex operations. The LLM uses this to organize multi-step tasks.
+Creates and updates plans for launching subagents via the Task tool. Each plan item specifies subagent_type and prompt for the Task tool to execute. The LLM uses this to organize multi-step subagent work.
 
 :::note
 This tool is disabled for subagents by default, but you can enable it manually. [Learn more](/docs/agents/#permissions)
@@ -250,7 +250,7 @@ This tool is disabled for subagents by default, but you can enable it manually. 
 
 ### todoread
 
-Read existing todo lists.
+Read existing subagent orchestration plans.
 
 ```json title="opencode.json" {4}
 {
@@ -261,7 +261,7 @@ Read existing todo lists.
 }
 ```
 
-Reads the current todo list state. Used by the LLM to track what tasks are pending or completed.
+Reads the current subagent plan state. Used by the LLM to track which subagent tasks are pending or completed.
 
 :::note
 This tool is disabled for subagents by default, but you can enable it manually. [Learn more](/docs/agents/#permissions)

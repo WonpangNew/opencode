@@ -50,8 +50,8 @@ export const dict = {
   "ui.tool.webfetch": "웹 가져오기",
   "ui.tool.shell": "셸",
   "ui.tool.patch": "패치",
-  "ui.tool.todos": "할 일",
-  "ui.tool.todos.read": "할 일 읽기",
+  "ui.tool.todos": "서브에이전트 계획",
+  "ui.tool.todos.read": "서브에이전트 계획 읽기",
   "ui.tool.questions": "질문",
   "ui.tool.agent": "{{type}} 에이전트",
 

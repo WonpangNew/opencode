@@ -50,8 +50,8 @@ export const dict = {
   "ui.tool.webfetch": "Pobieranie sieciowe",
   "ui.tool.shell": "Terminal",
   "ui.tool.patch": "Patch",
-  "ui.tool.todos": "Zadania",
-  "ui.tool.todos.read": "Czytaj zadania",
+  "ui.tool.todos": "Plan subagentów",
+  "ui.tool.todos.read": "Odczyt planu subagentów",
   "ui.tool.questions": "Pytania",
   "ui.tool.agent": "Agent {{type}}",
 

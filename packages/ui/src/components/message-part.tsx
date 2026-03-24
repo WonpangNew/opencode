@@ -1235,7 +1235,11 @@ ToolRegistry.register({
               {(todo: Todo) => (
                 <Checkbox readOnly checked={todo.status === "completed"}>
                   <div data-slot="message-part-todo-content" data-completed={todo.status === "completed"}>
-                    {todo.content}
+                    <Show when={(todo as any).subagent_type} fallback={todo.content}>
+                      <span data-slot="subagent-type">@{(todo as any).subagent_type}</span>
+                      {" — "}
+                      {todo.content}
+                    </Show>
                   </div>
                 </Checkbox>
               )}

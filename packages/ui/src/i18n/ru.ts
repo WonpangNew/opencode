@@ -50,8 +50,8 @@ export const dict = {
   "ui.tool.webfetch": "Webfetch",
   "ui.tool.shell": "Оболочка",
   "ui.tool.patch": "Патч",
-  "ui.tool.todos": "Задачи",
-  "ui.tool.todos.read": "Читать задачи",
+  "ui.tool.todos": "План подагентов",
+  "ui.tool.todos.read": "Читать план подагентов",
   "ui.tool.questions": "Вопросы",
   "ui.tool.agent": "Агент {{type}}",
 
